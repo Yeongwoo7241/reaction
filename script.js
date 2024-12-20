@@ -279,7 +279,7 @@ function updateCoffeeMessage() {
         }
     }
 
-    coffeeMessage.innerText = `오늘의 땡잡이 주인공은?`;
+    coffeeMessage.innerText = `오늘의 거북이는?`;
 }
 
 // 초기화
