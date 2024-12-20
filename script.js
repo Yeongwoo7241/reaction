@@ -88,7 +88,7 @@ gameStartBtn.addEventListener('click', () => {
 
 function selectParticipant(event) {
     currentParticipant = event.target.getAttribute('data-name');
-    currentPlayer.innerText = 현재 플레이어: ${currentParticipant};
+    currentPlayer.innerText = `현재 플레이어: ${currentParticipant}`;
     mainBtn.disabled = false;
     mainBtn.innerText = 'Start';
     resultDisplay.innerText = '';
@@ -106,7 +106,7 @@ mainBtn.addEventListener('click', () => {
         if (inGreenPhase) {
             const stopTime = Date.now();
             const reactionTime = stopTime - reactionStartTime; // ms
-            resultDisplay.innerText = 반응속도: ${reactionTime}ms;
+            resultDisplay.innerText = `반응속도: ${reactionTime}ms`;
             scores[currentParticipant] = reactionTime;
             endRound();
         } else {
@@ -119,6 +119,7 @@ mainBtn.addEventListener('click', () => {
         // Reset 상태 시 추가 로직 필요시 구현
     }
 });
+
 function startReactionGame() {
     gameRunning = true;
     mainBtn.innerText = 'Stop';
@@ -130,7 +131,7 @@ function startReactionGame() {
 
     const delay = (Math.random() * 2000) + 3000; // 3~5초
     reactionTimer = setTimeout(() => {
-        // 초록색 전환 (더 밝은 색상으로 수정)
+        // 초록색 전환 (밝은 초록색 적용)
         page2.style.backgroundColor = '#32CD32'; // 밝은 초록색
         inGreenPhase = true;
         reactionStartTime = Date.now();
@@ -150,7 +151,6 @@ function endRound() {
     displayResults();
     processResults();
 }
-
 function displayResults() {
     results.innerHTML = '';
 
@@ -174,13 +174,13 @@ function displayResults() {
     });
     table.appendChild(headerRow);
 
-    // 점수 높은 순으로 정렬
-    const sortedScores = Object.entries(scores).sort(([, a], [, b]) => b - a);
+    // 점수 낮은 순으로 정렬 (순위는 1위부터)
+    const sortedScores = Object.entries(scores).sort(([, a], [, b]) => a - b);
 
     sortedScores.forEach(([participant, score], index) => {
         const row = document.createElement('tr');
         const rankCell = document.createElement('td');
-        rankCell.innerText = `${index + 1}위`;
+        rankCell.innerText = `${index + 1}위`; // 1위부터 표시
         const nameCell = document.createElement('td');
         nameCell.innerText = participant;
         const scoreCell = document.createElement('td');
@@ -212,7 +212,7 @@ function processResults() {
         if (losers.length === 1) {
             const loserMessage = document.createElement('div');
             loserMessage.className = 'highlight';
-            loserMessage.innerText = `오늘의 거북이: ${losers[0]}`;
+            loserMessage.innerText = `오늘의 당첨자: ${losers[0]}`;
             results.appendChild(loserMessage);
         } else {
             const tieMessage = document.createElement('div');
@@ -237,49 +237,3 @@ function processResults() {
         }
     }
 }
-
-function launchFireworks() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-
-    const interval = setInterval(() => {
-        for (let i = 0; i < 5; i++) {
-            const x = Math.random() * width;
-            const y = Math.random() * height;
-            createFirework(x, y);
-        }
-    }, 500);
-
-    setTimeout(() => {
-        clearInterval(interval);
-    }, 10000);
-}
-
-function createFirework(x, y) {
-    const firework = document.createElement('div');
-    firework.className = 'firework';
-    firework.style.left = ${x}px;
-    firework.style.top = ${y}px;
-    document.body.appendChild(firework);
-
-    setTimeout(() => {
-        firework.remove();
-    }, 10000);
-}
-
-function updateCoffeeMessage() {
-    let lowestScore = Infinity;
-    let lowestScorer = '';
-
-    for (const [participant, score] of Object.entries(scores)) {
-        if (score < lowestScore) {
-            lowestScore = score;
-            lowestScorer = participant;
-        }
-    }
-
-    coffeeMessage.innerText = 오늘의 거북이는?;
-}
-
-// 초기화
-updateCoffeeMessage(); 
