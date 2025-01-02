@@ -8,6 +8,8 @@ html, body {
     align-items: center;
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
+    position: fixed;
+    overflow: hidden;
 }
 
 .container {
